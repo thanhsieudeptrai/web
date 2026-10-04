@@ -3,66 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang Web Troll Siêu Cấp</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <title>Trang Web Nhận Xét Siêu Cấp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Thư viện tạo pháo hoa ở trang cuối -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
       body {
         font-family: "Plus Jakarta Sans", sans-serif;
       }
       .fade-in {
-        animation: fadeIn 0.4s ease-in-out;
+        animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
       }
-
-      /* Nút chạy trốn mượt mà */
       .evasive-btn {
-        transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: transform 0.15s ease-out;
         will-change: transform;
       }
     </style>
   </head>
-  <body
-    class="bg-gray-100 text-black min-h-screen flex flex-col justify-between p-4 overflow-x-hidden relative"
-  >
-    <!-- BACKGROUND TOÀN MÀN HÌNH (Hiện ngay từ đầu) -->
-    <div id="full-bg" class="fixed inset-0 z-0 transition-opacity duration-500">
-      <img id="full-bg-img" src="" class="w-full h-full object-cover" />
-      <!-- Lớp phủ làm dịu nền để chữ dễ đọc hơn -->
-      <div class="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
+  <body class="bg-gray-900 text-gray-800 min-h-screen flex flex-col justify-between p-4 overflow-hidden relative select-none">
+    
+    <!-- BACKGROUND TOÀN MÀN HÌNH -->
+    <div id="full-bg" class="fixed inset-0 z-0 transition-all duration-700">
+      <img id="full-bg-img" src="" class="w-full h-full object-cover scale-105" />
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
     </div>
 
+    <!-- CẤU HÌNH DỮ LIỆU -->
     <script>
-      // =========================================================================
-      // 1. CẤU HÌNH CÁC CÂU HỎI VÀ ĐƯỜNG DẪN ẢNH
-      // =========================================================================
-
-      // Điền tên file ảnh nằm cùng thư mục (ví dụ: "anh-lop.jpg")
-      const URL_ANH_NEN_TRANG_DAU = "to1cute.jpg";
+      const URL_ANH_NEN_TRANG_DAU = "to1cute.jpg"; // Đặt file ảnh cùng thư mục
       const URL_ANH_CAU_HOI_1 = "";
       const URL_ANH_CAU_HOI_2 = "";
 
       const sheets = [
         {
           type: "welcome",
-          title: "XIN CHÀO CẢ NHÓM!",
-          subtitle: "Chào mừng bạn đến với trang web nhận xét này",
+          title: "XIN CHÀO CẢ NHÓM! 👋",
+          subtitle: "Dành ra 10 giây để đánh giá độ đẹp trai của tớ nhé!",
           bgImage: URL_ANH_NEN_TRANG_DAU,
         },
         {
@@ -70,72 +52,49 @@
           title: "CÂU HỎI 1",
           question: "Bạn thấy tớ có đẹp trai không?",
           imageUrl: URL_ANH_CAU_HOI_1,
-          correctOptionIndex: 3, // Đáp án D là đúng
+          correctOptionIndex: 3,
           options: [
-            "A. Không muốn nhìn lần 2",
-            "B. Trông cũng... tạm được",
-            "C. Bình thường, không nổi bật",
-            "D. Vẻ đẹp không góc chết, siêu cấp đẹp trai",
+            "A. Không muốn nhìn lần 2 🤮",
+            "B. Trông cũng... tạm được 😐",
+            "C. Bình thường, không nổi bật 😶",
+            "D. Vẻ đẹp không góc chết, siêu đẹp trai! ✨",
           ],
         },
         {
           type: "troll-input",
           title: "CÂU HỎI 2",
-          question: "Hãy nhập nhận xét thật lòng của bạn về tớ vào đây:",
+          question: "Hãy nhập nhận xét thật lòng của bạn vào đây:",
           imageUrl: URL_ANH_CAU_HOI_2,
-          forcedText:
-            "Có! Bạn là người siêu cấp đẹp trai, dễ thương và vô cùng tốt tính!",
+          forcedText: "Có! Bạn là người siêu cấp đẹp trai, dễ thương và vô cùng tốt tính! ❤️",
         },
       ];
     </script>
 
-    <!-- ========================================================================= -->
-    <!-- 2. GIAO DIỆN CHÍNH (Nằm trực tiếp trên ảnh, bố cục dọc) -->
-    <!-- ========================================================================= -->
-    <div
-      id="main-container"
-      class="w-full max-w-3xl mx-auto min-h-screen flex flex-col justify-between items-center py-6 relative z-10 text-black font-extrabold"
-    >
+    <!-- CONTAINER CHÍNH -->
+    <div id="main-container" class="w-full max-w-xl mx-auto min-h-screen flex flex-col justify-between items-center py-6 relative z-10">
+      
       <!-- Progress Bar -->
-      <div
-        id="progress-bar-container"
-        class="w-full max-w-md bg-white/80 backdrop-blur-md h-3 rounded-full overflow-hidden mb-4 hidden border border-gray-300 shadow-md"
-      >
-        <div
-          id="progress-bar"
-          class="bg-gradient-to-r from-pink-500 to-purple-600 h-full transition-all duration-300"
-          style="width: 0%"
-        ></div>
+      <div id="progress-bar-container" class="w-full bg-white/20 backdrop-blur-md h-2.5 rounded-full overflow-hidden mb-4 hidden border border-white/20">
+        <div id="progress-bar" class="bg-gradient-to-r from-pink-500 to-yellow-400 h-full transition-all duration-300" style="width: 0%"></div>
       </div>
 
-      <!-- Nội dung hiển thị chính -->
-      <div
-        id="app-content"
-        class="w-full flex-1 flex flex-col justify-between items-center text-center my-auto"
-      ></div>
+      <!-- Content -->
+      <div id="app-content" class="w-full flex-1 flex flex-col justify-center items-center text-center my-auto"></div>
 
       <!-- Nav Button -->
       <div id="nav-buttons" class="mt-4 flex justify-center w-full hidden">
-        <button
-          id="btn-next"
-          onclick="nextSheet()"
-          class="px-8 py-4 rounded-2xl bg-black text-white font-extrabold text-lg transition shadow-2xl active:scale-95 border-2 border-white hover:bg-gray-800"
-        >
+        <button id="btn-next" onclick="nextSheet()" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-lg shadow-lg active:scale-95 transition-all hover:brightness-110">
           Tiếp theo ➔
         </button>
       </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- 3. LOGIC XỬ LÝ -->
-    <!-- ========================================================================= -->
+    <!-- LOGIC SỬA ĐỔI -->
     <script>
       let currentSheet = 0;
 
       const contentDiv = document.getElementById("app-content");
-      const progressBarContainer = document.getElementById(
-        "progress-bar-container",
-      );
+      const progressBarContainer = document.getElementById("progress-bar-container");
       const progressBar = document.getElementById("progress-bar");
       const navButtons = document.getElementById("nav-buttons");
       const fullBg = document.getElementById("full-bg");
@@ -152,63 +111,43 @@
           progressBarContainer.classList.add("hidden");
         }
 
-        // Welcome Sheet (Cấu trúc dọc đúng như phác thảo)
+        // Welcome
         if (sheet.type === "welcome") {
           navButtons.classList.add("hidden");
-
-          if (sheet.bgImage) {
-            fullBgImg.src = sheet.bgImage;
-            fullBg.classList.remove("hidden");
-          }
+          if (sheet.bgImage) fullBgImg.src = sheet.bgImage;
 
           contentDiv.innerHTML = `
-            <div class="fade-in w-full h-full flex flex-col justify-between items-center py-4 min-h-[80vh]">
-              
-              <!-- Ô 1 TRÊN CÙNG: Nhãn nhỏ -->
-              <div class="mt-2">
-                <span class="px-5 py-2 rounded-full bg-white/90 backdrop-blur-md border border-gray-300 text-black text-sm font-black tracking-widest uppercase shadow-lg">
-                  ĐỘI HÌNH SIÊU ĐÁNG YÊU
-                </span>
+            <div class="fade-in w-full flex flex-col items-center gap-6 py-8">
+              <span class="px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-black tracking-widest uppercase shadow-sm">
+                ĐỘI HÌNH SIÊU ĐÁNG YÊU
+              </span>
+              <div class="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-2xl w-full">
+                <h1 class="text-3xl sm:text-4xl font-black mb-3 tracking-wide">${sheet.title}</h1>
+                <p class="text-white/80 text-base font-semibold">${sheet.subtitle}</p>
               </div>
-
-              <!-- Ô 2 Ở GIỮA: Tiêu đề & Phụ đề -->
-              <div class="my-auto px-4 py-6 rounded-2xl bg-white/60 backdrop-blur-sm max-w-xl border border-white/50 shadow-md">
-                <h1 class="text-3xl sm:text-5xl font-black text-black mb-3 tracking-wide">
-                  ${sheet.title}
-                </h1>
-                <p class="text-black text-lg sm:text-xl font-bold">${sheet.subtitle}</p>
-              </div>
-
-              <!-- Ô 3 DƯỚI CÙNG: Nút bắt đầu -->
-              <div class="w-full max-w-sm mb-4">
-                <button onclick="nextSheet()" class="w-full py-4 rounded-2xl bg-black text-white font-black text-xl shadow-2xl hover:bg-gray-800 active:scale-95 transition tracking-wide border-2 border-white">
-                  Bắt đầu ngay
-                </button>
-              </div>
-
+              <button onclick="nextSheet()" class="w-full py-4 rounded-2xl bg-white text-black font-black text-lg shadow-xl hover:bg-gray-100 active:scale-95 transition">
+                Bắt đầu ngay🚀
+              </button>
             </div>
           `;
         }
 
-        // Troll Choice Sheet
+        // Troll Choice
         else if (sheet.type === "troll-choice") {
           navButtons.classList.add("hidden");
-
-          let imgHtml = sheet.imageUrl
-            ? `<img src="${sheet.imageUrl}" class="w-24 h-24 object-cover rounded-2xl mb-4 border-2 border-white shadow-md">`
-            : "";
+          let imgHtml = sheet.imageUrl ? `<img src="${sheet.imageUrl}" class="w-20 h-20 object-cover rounded-2xl mb-4 border-2 border-white/40 shadow-md">` : "";
 
           let optionsHtml = "";
           sheet.options.forEach((opt, idx) => {
             if (idx === sheet.correctOptionIndex) {
               optionsHtml += `
-                <button onclick="nextSheet()" class="w-full h-full p-4 rounded-xl bg-pink-600 border-2 border-white text-white font-extrabold hover:bg-pink-500 transition flex items-center justify-center text-sm shadow-xl">
+                <button onclick="nextSheet()" class="w-full p-4 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black hover:opacity-90 transition text-sm shadow-lg active:scale-95">
                   ${opt}
                 </button>
               `;
             } else {
               optionsHtml += `
-                <button onmouseenter="escapeButton(this)" onclick="escapeButton(this)" class="evasive-btn w-full h-full p-4 rounded-xl bg-white/90 backdrop-blur-md border border-gray-300 text-black font-extrabold hover:bg-white flex items-center justify-center text-sm relative z-10 shadow-lg">
+                <button onmouseenter="escapeButton(this)" onclick="escapeButton(this)" ontouchstart="escapeButton(this)" class="evasive-btn w-full p-4 rounded-2xl bg-white/80 backdrop-blur-md text-gray-900 font-extrabold text-sm relative shadow-md">
                   ${opt}
                 </button>
               `;
@@ -216,76 +155,72 @@
           });
 
           contentDiv.innerHTML = `
-            <div class="fade-in w-full max-w-xl my-auto p-6 rounded-3xl bg-white/70 backdrop-blur-md border-2 border-white shadow-2xl flex flex-col items-center">
+            <div class="fade-in w-full p-6 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col items-center">
               ${imgHtml}
-              <span class="text-xs font-black text-black mb-1 tracking-wider uppercase">${sheet.title}</span>
-              <h2 class="text-2xl font-extrabold mb-6 text-black">${sheet.question}</h2>
-              <div id="grid-container" class="w-full grid grid-cols-2 gap-4 min-h-[160px] relative">
+              <span class="text-xs font-black text-pink-300 mb-1 tracking-wider uppercase">${sheet.title}</span>
+              <h2 class="text-xl font-extrabold mb-6 text-white">${sheet.question}</h2>
+              <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-3 min-h-[180px] relative">
                 ${optionsHtml}
               </div>
             </div>
           `;
         }
 
-        // Troll Input Sheet
+        // Troll Input
         else if (sheet.type === "troll-input") {
           navButtons.classList.remove("hidden");
-          let imgHtml = sheet.imageUrl
-            ? `<img src="${sheet.imageUrl}" class="w-24 h-24 object-cover rounded-2xl mb-4 border-2 border-white shadow-md">`
-            : "";
+          let imgHtml = sheet.imageUrl ? `<img src="${sheet.imageUrl}" class="w-20 h-20 object-cover rounded-2xl mb-4 border-2 border-white/40 shadow-md">` : "";
 
           contentDiv.innerHTML = `
-            <div class="fade-in w-full max-w-xl my-auto p-6 rounded-3xl bg-white/70 backdrop-blur-md border-2 border-white shadow-2xl flex flex-col items-center">
+            <div class="fade-in w-full p-6 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl flex flex-col items-center">
               ${imgHtml}
-              <span class="text-xs font-black text-black mb-1 tracking-wider uppercase">${sheet.title}</span>
-              <h2 class="text-2xl font-extrabold mb-6 text-black">${sheet.question}</h2>
-              <textarea id="troll-textarea" oninput="handleTrollTyping(event)" rows="4" placeholder="Nhập suy nghĩ của bạn..." class="w-full p-4 rounded-2xl bg-white border-2 border-gray-300 text-black font-bold text-base placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-pink-400/50 transition resize-none shadow-inner"></textarea>
+              <span class="text-xs font-black text-pink-300 mb-1 tracking-wider uppercase">${sheet.title}</span>
+              <h2 class="text-xl font-extrabold mb-6 text-white">${sheet.question}</h2>
+              <textarea id="troll-textarea" oninput="handleTrollTyping(event)" rows="4" placeholder="Gõ bất kỳ phím nào ở đây..." class="w-full p-4 rounded-2xl bg-white/90 text-gray-900 font-bold text-base focus:outline-none focus:ring-4 focus:ring-pink-500/50 transition resize-none shadow-inner"></textarea>
             </div>
           `;
+          setTimeout(() => document.getElementById("troll-textarea")?.focus(), 100);
         }
 
         // End Sheet
         else if (sheet.type === "end") {
           navButtons.classList.add("hidden");
+          confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
           contentDiv.innerHTML = `
-            <div class="fade-in text-center my-auto p-8 rounded-3xl bg-white/80 backdrop-blur-md border-2 border-white shadow-2xl max-w-md">
-              <h2 class="text-3xl font-extrabold text-black mb-2">Biết thế là tốt!</h2>
-              <p class="text-black font-bold text-lg">Cảm ơn bạn đã nhận xét cực kỳ chân thực về tớ nha!</p>
+            <div class="fade-in text-center p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl max-w-md text-white">
+              <div class="text-5xl mb-4">🎉</div>
+              <h2 class="text-3xl font-black mb-2">Biết thế là tốt!</h2>
+              <p class="text-white/80 font-bold text-base">Cảm ơn bạn đã nhận xét cực kỳ chân thực về tớ nha! 🤣</p>
             </div>
           `;
         }
       }
 
-      // XỬ LÝ NÚT CHẠY TRỐN
+      // Giới hạn nút không chạy khỏi khung nhìn màn hình
       function escapeButton(btn) {
-        const randomX = (Math.random() - 0.5) * 240;
-        const randomY = (Math.random() - 0.5) * 200;
+        const maxX = 80;
+        const maxY = 60;
+        const randomX = (Math.random() - 0.5) * maxX * 2;
+        const randomY = (Math.random() - 0.5) * maxY * 2;
         btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
       }
 
-      // GÕ PHÍM TROLL
       function handleTrollTyping(e) {
         const sheet = sheets[currentSheet];
         const targetText = sheet.forcedText;
         const textarea = e.target;
-
         const currentLen = textarea.value.length;
-        if (currentLen <= targetText.length) {
-          textarea.value = targetText.substring(0, currentLen);
-        } else {
-          textarea.value = targetText;
-        }
+        textarea.value = targetText.substring(0, currentLen);
       }
 
       function nextSheet() {
         if (currentSheet < sheets.length - 1) {
           currentSheet++;
-          renderSheet();
-        } else {
+        } else if (sheets[currentSheet].type !== "end") {
           sheets.push({ type: "end" });
           currentSheet++;
-          renderSheet();
         }
+        renderSheet();
       }
 
       renderSheet();
